@@ -7,1254 +7,872 @@
 <meta name="description" content="Personal universe of Fellah Amine — 2050">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
-/* ============================================
-   RESET & FOUNDATION
-   ============================================ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-:root{--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif;--font-ar:'Cairo',sans-serif}
+:root{--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',sans-serif}
 
-/* ============================================
-   THEME VARIABLES — STRICT MONOCHROME
-   ============================================ */
 [data-theme="dark"]{
   --bg:#000000;--bg2:#050505;--bg3:#0a0a0a;
   --text:#ffffff;--text2:#999999;--text3:#555555;
   --border:rgba(255,255,255,0.07);--border-h:rgba(255,255,255,0.22);--border-a:rgba(255,255,255,0.4);
   --card:rgba(255,255,255,0.015);--card-h:rgba(255,255,255,0.04);
-  --glow:rgba(255,255,255,0.06);--star:#fff;--cursor-g:rgba(255,255,255,0.04);
-  --shadow:0 0 80px rgba(255,255,255,0.03);--inv:0
+  --glow:rgba(255,255,255,0.06);--cursor-g:rgba(255,255,255,0.04);
+  --shadow:0 0 80px rgba(255,255,255,0.03);--star:#ffffff
 }
 [data-theme="light"]{
   --bg:#f0f0f0;--bg2:#e8e8e8;--bg3:#ffffff;
   --text:#000000;--text2:#666666;--text3:#aaaaaa;
   --border:rgba(0,0,0,0.06);--border-h:rgba(0,0,0,0.18);--border-a:rgba(0,0,0,0.35);
   --card:rgba(0,0,0,0.02);--card-h:rgba(0,0,0,0.05);
-  --glow:rgba(0,0,0,0.03);--star:rgba(0,0,0,0.1);--cursor-g:rgba(0,0,0,0.03);
-  --shadow:0 0 80px rgba(0,0,0,0.04);--inv:1
+  --glow:rgba(0,0,0,0.03);--cursor-g:rgba(0,0,0,0.03);
+  --shadow:0 0 80px rgba(0,0,0,0.04);--star:rgba(0,0,0,0.15)
 }
 
-/* ============================================
-   BASE STYLES
-   ============================================ */
 body{
   font-family:var(--font-body);background:var(--bg);color:var(--text);
   overflow-x:hidden;transition:background .6s cubic-bezier(.4,0,.2,1),color .6s cubic-bezier(.4,0,.2,1);
   cursor:none
 }
-[lang="ar"] body,[dir="rtl"] body{font-family:var(--font-ar)}
 a{color:inherit;text-decoration:none}
 button{font-family:inherit;cursor:none}
 ::selection{background:var(--text);color:var(--bg)}
-::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--text3);border-radius:4px}
 
-/* ============================================
-   CUSTOM CURSOR
-   ============================================ */
+/* ── CURSOR ── */
 .cursor-dot{
-  position:fixed;width:6px;height:6px;background:var(--text);border-radius:50%;
+  position:fixed;width:5px;height:5px;background:var(--text);border-radius:50%;
   pointer-events:none;z-index:100000;mix-blend-mode:difference;
-  transition:width .3s,height .3s,margin .3s
+  transform:translate(-50%,-50%)
 }
 .cursor-ring{
-  position:fixed;width:40px;height:40px;border:1px solid var(--text);border-radius:50%;
-  pointer-events:none;z-index:99999;opacity:.4;
-  transition:width .4s cubic-bezier(.18,1.4,.4,1),height .4s cubic-bezier(.18,1.4,.4,1),
-  margin .4s cubic-bezier(.18,1.4,.4,1),opacity .3s,border-color .3s
+  position:fixed;width:36px;height:36px;border:1px solid var(--text);border-radius:50%;
+  pointer-events:none;z-index:99999;opacity:.35;
+  transform:translate(-50%,-50%);
+  transition:width .4s cubic-bezier(.18,1.4,.4,1),height .4s cubic-bezier(.18,1.4,.4,1),opacity .3s
 }
-.cursor-ring.hover{width:60px;height:60px;margin:-30px 0 0 -30px;opacity:.2;border-color:var(--text2)}
+.cursor-ring.hover{width:56px;height:56px;opacity:.18}
 .cursor-glow{
-  position:fixed;width:400px;height:400px;pointer-events:none;z-index:0;
+  position:fixed;width:350px;height:350px;pointer-events:none;z-index:0;
   background:radial-gradient(circle,var(--cursor-g) 0%,transparent 70%);border-radius:50%;
-  transform:translate(-50%,-50%)
+  transform:translate(-50%,-50%);transition:none
 }
 @media(max-width:768px){.cursor-dot,.cursor-ring,.cursor-glow{display:none}body{cursor:auto}}
 
-/* ============================================
-   STARFIELD — STATIC & CRISP
-   ============================================ */
+/* ── STARFIELD ── */
 #starfield{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.star-point{
-  position:absolute;border-radius:50%;background:var(--star);
-  transition:background .6s
-}
+.star-point{position:absolute;border-radius:50%;background:var(--star);transition:background .6s}
 
-/* ============================================
-   PRELOADER
-   ============================================ */
+/* ── PRELOADER ── */
 #preloader{
   position:fixed;top:0;left:0;width:100%;height:100%;z-index:99998;
   background:#000000;display:flex;align-items:center;justify-content:center;flex-direction:column
 }
 .pre-text{
-  font-family:var(--font-display);font-size:clamp(60px,15vw,180px);font-weight:700;
-  color:#ffffff;letter-spacing:.05em;overflow:hidden;display:flex;gap:.02em
+  font-family:var(--font-display);font-size:clamp(70px,18vw,220px);font-weight:700;
+  color:#ffffff;letter-spacing:.06em;display:flex;gap:.01em
 }
-.pre-char{display:inline-block;opacity:0;transform:translateY(100%) rotateX(-90deg);transform-origin:bottom}
-.pre-line{width:0;height:1px;background:#ffffff;margin-top:20px;opacity:.5}
-.pre-sub{font-family:var(--font-display);font-size:14px;letter-spacing:.3em;text-transform:uppercase;
-  color:#555;margin-top:16px;opacity:0}
+.pre-char{
+  display:inline-block;opacity:0;
+  transform:translateY(100%) rotateX(-90deg);transform-origin:bottom center
+}
+.pre-line{width:0;height:1px;background:rgba(255,255,255,0.3);margin-top:24px}
+.pre-sub{
+  font-size:11px;letter-spacing:.4em;text-transform:uppercase;
+  color:#444;margin-top:14px;opacity:0;font-family:var(--font-display)
+}
 
-/* ============================================
-   NAVIGATION
-   ============================================ */
+/* ── NAV ── */
 #nav{
-  position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 40px;
+  position:fixed;top:0;left:0;right:0;z-index:1000;padding:24px 48px;
   display:flex;align-items:center;justify-content:space-between;
-  opacity:0;transform:translateY(-20px)
+  opacity:0;transform:translateY(-20px);transition:background .3s,backdrop-filter .3s
 }
-.nav-logo{font-family:var(--font-display);font-size:18px;font-weight:700;letter-spacing:.15em;
-  transition:opacity .3s}
-.nav-logo:hover{opacity:.6}
-.nav-controls{display:flex;align-items:center;gap:12px}
+@media(max-width:600px){#nav{padding:16px 20px}}
+.nav-logo{
+  font-family:var(--font-display);font-size:17px;font-weight:700;
+  letter-spacing:.2em;transition:opacity .3s
+}
+.nav-logo:hover{opacity:.5}
+.nav-right{display:flex;align-items:center;gap:10px}
+
 .toggle-btn{
   background:var(--card);border:1px solid var(--border);border-radius:100px;
-  padding:8px 18px;font-size:12px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;
-  color:var(--text2);display:flex;align-items:center;gap:8px;
+  padding:8px 18px;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--text2);display:flex;align-items:center;gap:7px;
   transition:all .3s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden
 }
-.toggle-btn::before{
+.toggle-btn::after{
   content:'';position:absolute;inset:0;background:var(--card-h);
   transform:scaleX(0);transform-origin:left;transition:transform .4s cubic-bezier(.4,0,.2,1)
 }
-.toggle-btn:hover::before{transform:scaleX(1)}
+.toggle-btn:hover::after{transform:scaleX(1)}
 .toggle-btn:hover{border-color:var(--border-h);color:var(--text)}
-.toggle-btn svg{width:14px;height:14px;position:relative;z-index:1}
-.toggle-btn span{position:relative;z-index:1}
+.toggle-btn svg,.toggle-btn span{position:relative;z-index:1}
+.toggle-btn svg{width:13px;height:13px}
 
-@media(max-width:600px){
-  #nav{padding:16px 20px}
-  .toggle-btn{padding:6px 12px;font-size:10px}
-  .toggle-btn span.hide-mobile{display:none}
-}
-
-/* ============================================
-   HERO SECTION
-   ============================================ */
+/* ── HERO ── */
 #hero{
   min-height:100vh;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;position:relative;z-index:1;padding:120px 20px 80px
+  justify-content:center;position:relative;z-index:1;padding:120px 20px 100px;
+  overflow:hidden
 }
 .hero-title-wrap{
   position:relative;display:flex;align-items:center;justify-content:center;
-  perspective:1000px;overflow:visible
+  perspective:1200px
 }
 .hero-char{
-  font-family:var(--font-display);font-size:clamp(90px,22vw,320px);font-weight:700;
-  line-height:.85;letter-spacing:.03em;display:inline-block;
-  opacity:0;transform:translateY(60px) scale(.8);
-  will-change:transform,opacity;position:relative;
-  text-shadow:0 0 120px var(--glow)
-}
-.hero-char::after{
-  content:attr(data-char);position:absolute;top:0;left:0;
-  opacity:.03;filter:blur(2px);z-index:-1
+  font-family:var(--font-display);font-size:clamp(100px,24vw,340px);font-weight:700;
+  line-height:.85;letter-spacing:.04em;display:inline-block;
+  opacity:0;transform:translateY(80px) scale(.85);
+  will-change:transform,opacity
 }
 .hero-name{
-  font-family:var(--font-ar);font-size:clamp(16px,2.5vw,28px);font-weight:400;
-  letter-spacing:.2em;color:var(--text2);margin-top:clamp(12px,2vw,30px);
-  opacity:0;transform:translateY(20px);text-align:center
+  font-family:var(--font-display);font-size:clamp(13px,2vw,22px);font-weight:300;
+  letter-spacing:.35em;color:var(--text2);margin-top:clamp(16px,2.5vw,32px);
+  opacity:0;transform:translateY(16px);text-align:center;text-transform:uppercase
 }
 .hero-line{
-  width:0;height:1px;background:linear-gradient(90deg,transparent,var(--text3),transparent);
-  margin-top:clamp(16px,2vw,28px)
+  width:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--text3),transparent);
+  margin:clamp(16px,2vw,28px) auto 0
 }
 .scroll-indicator{
-  position:absolute;bottom:40px;display:flex;flex-direction:column;align-items:center;
-  gap:8px;opacity:0
+  position:absolute;bottom:44px;display:flex;flex-direction:column;
+  align-items:center;gap:10px;opacity:0
 }
-.scroll-line{width:1px;height:40px;background:var(--text3);position:relative;overflow:hidden}
+.scroll-line{width:1px;height:48px;background:var(--text3);position:relative;overflow:hidden}
 .scroll-line::after{
   content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;
-  background:var(--text);animation:scrollPulse 2s ease-in-out infinite
+  background:var(--text);animation:scrollPulse 2.2s ease-in-out infinite
 }
-.scroll-text{font-size:9px;letter-spacing:.3em;text-transform:uppercase;color:var(--text3)}
-@keyframes scrollPulse{0%{top:-100%}50%{top:100%}100%{top:100%}}
+.scroll-text{font-size:9px;letter-spacing:.35em;text-transform:uppercase;color:var(--text3)}
+@keyframes scrollPulse{0%{top:-100%}60%{top:100%}100%{top:100%}}
 
-/* ============================================
-   SECTION COMMONS
-   ============================================ */
-.section-label{
-  font-family:var(--font-display);font-size:11px;font-weight:500;
-  letter-spacing:.4em;text-transform:uppercase;color:var(--text3);
-  margin-bottom:60px;text-align:center;position:relative;display:inline-block
-}
-.section-label::before,.section-label::after{
-  content:'';position:absolute;top:50%;width:40px;height:1px;background:var(--border-h)
-}
-.section-label::before{right:calc(100% + 16px)}
-.section-label::after{left:calc(100% + 16px)}
-
-/* ============================================
-   IDENTITY CARDS — FLOATING NON-LINEAR GRID
-   ============================================ */
-#identities{
-  min-height:100vh;padding:120px 5% 160px;position:relative;z-index:1;
+/* ── SECTION COMMONS ── */
+.section-wrap{
+  min-height:100vh;padding:140px 5% 160px;position:relative;z-index:1;
   display:flex;flex-direction:column;align-items:center
 }
+.section-label{
+  font-family:var(--font-display);font-size:10px;font-weight:500;
+  letter-spacing:.5em;text-transform:uppercase;color:var(--text3);
+  margin-bottom:70px;text-align:center;position:relative;display:inline-block
+}
+.section-label::before,.section-label::after{
+  content:'';position:absolute;top:50%;width:36px;height:1px;background:var(--border-h)
+}
+.section-label::before{right:calc(100% + 14px)}
+.section-label::after{left:calc(100% + 14px)}
+
+/* ── IDENTITY CARDS ── */
 .cards-wrapper{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(16px,2.5vw,32px);
-  max-width:1100px;perspective:1200px
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:clamp(14px,2vw,26px);max-width:1100px;perspective:1400px
 }
 .identity-card{
-  width:clamp(200px,28vw,210px);padding:clamp(28px,3vw,40px) clamp(20px,2vw,28px);
-  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  width:clamp(190px,22vw,210px);padding:clamp(28px,3vw,38px) clamp(20px,2vw,26px);
+  background:var(--card);border:1px solid var(--border);border-radius:22px;
   position:relative;overflow:hidden;
-  opacity:0;transform:translateY(60px) scale(.95);
+  opacity:0;transform:translateY(70px);
   transition:background .4s,border-color .4s,box-shadow .4s;
-  will-change:transform;display:flex;flex-direction:column;align-items:center;text-align:center
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+  will-change:transform
 }
 .identity-card::before{
-  content:'';position:absolute;inset:-1px;border-radius:20px;
-  background:linear-gradient(135deg,var(--border-h),transparent 40%,transparent 60%,var(--border-h));
+  content:'';position:absolute;inset:-1px;border-radius:22px;
+  background:linear-gradient(135deg,var(--border-h),transparent 45%,transparent 55%,var(--border));
   z-index:-1;opacity:0;transition:opacity .5s
 }
 .identity-card:hover::before{opacity:1}
-.identity-card:hover{
-  background:var(--card-h);border-color:var(--border-h);
-  box-shadow:var(--shadow)
-}
-
-/* Card vertical offsets for non-linear feel */
-.identity-card:nth-child(1){margin-top:0}
-.identity-card:nth-child(2){margin-top:50px}
-.identity-card:nth-child(3){margin-top:-20px}
-.identity-card:nth-child(4){margin-top:70px}
-.identity-card:nth-child(5){margin-top:10px}
+.identity-card:hover{background:var(--card-h);border-color:var(--border-h);box-shadow:var(--shadow)}
+.identity-card:nth-child(1){margin-top:0px}
+.identity-card:nth-child(2){margin-top:55px}
+.identity-card:nth-child(3){margin-top:-15px}
+.identity-card:nth-child(4){margin-top:75px}
+.identity-card:nth-child(5){margin-top:20px}
 
 @media(max-width:768px){
-  .identity-card{width:calc(50% - 12px)}
+  .identity-card{width:calc(50% - 10px)}
   .identity-card:nth-child(n){margin-top:0}
 }
-@media(max-width:480px){
-  .identity-card{width:100%;max-width:280px}
-}
+@media(max-width:440px){.identity-card{width:100%;max-width:260px}}
 
 .card-icon{
-  width:48px;height:48px;margin-bottom:20px;
+  width:50px;height:50px;margin-bottom:22px;
   display:flex;align-items:center;justify-content:center;
-  border-radius:14px;background:var(--card);border:1px solid var(--border);
-  transition:transform .4s cubic-bezier(.18,1.4,.4,1),border-color .4s
+  border-radius:15px;background:var(--card);border:1px solid var(--border);
+  transition:transform .5s cubic-bezier(.18,1.4,.4,1),border-color .4s
 }
-.card-icon svg{width:22px;height:22px;stroke:var(--text);stroke-width:1.5;fill:none;transition:stroke .3s}
-.identity-card:hover .card-icon{transform:scale(1.1) translateY(-2px);border-color:var(--border-h)}
-.card-title{font-family:var(--font-display);font-size:14px;font-weight:600;letter-spacing:.04em;margin-bottom:6px}
-.card-sub{font-size:11px;color:var(--text3);letter-spacing:.08em;font-weight:400}
+.card-icon svg{
+  width:21px;height:21px;stroke:var(--text);stroke-width:1.4;
+  fill:none;stroke-linecap:round;stroke-linejoin:round
+}
+.identity-card:hover .card-icon{transform:scale(1.12) translateY(-3px);border-color:var(--border-h)}
+.card-title{font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.05em;margin-bottom:5px}
+.card-sub{font-size:11px;color:var(--text3);letter-spacing:.1em}
 
-/* ============================================
-   CONTACT SECTION
-   ============================================ */
-#contact{
-  min-height:70vh;padding:120px 5% 160px;position:relative;z-index:1;
-  display:flex;flex-direction:column;align-items:center
-}
+/* ── CONTACT ── */
 .contact-grid{
-  display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(16px,3vw,40px);
-  margin-top:20px;max-width:900px
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:clamp(12px,2.5vw,28px);max-width:860px
 }
 .contact-item{
-  display:flex;align-items:center;gap:16px;padding:20px 28px;
-  background:var(--card);border:1px solid var(--border);border-radius:16px;
-  min-width:260px;transition:all .4s cubic-bezier(.4,0,.2,1);
+  display:flex;align-items:center;gap:16px;
+  padding:18px 26px;background:var(--card);border:1px solid var(--border);border-radius:16px;
+  min-width:240px;transition:all .4s cubic-bezier(.4,0,.2,1);
   opacity:0;transform:translateY(30px)
 }
 .contact-item:hover{
   border-color:var(--border-h);background:var(--card-h);
-  transform:translateY(-4px)!important;box-shadow:var(--shadow)
+  transform:translateY(-5px)!important;box-shadow:var(--shadow)
 }
 .contact-icon{
-  width:44px;height:44px;min-width:44px;display:flex;align-items:center;justify-content:center;
+  width:42px;height:42px;min-width:42px;display:flex;align-items:center;justify-content:center;
   border-radius:12px;background:var(--card-h);border:1px solid var(--border)
 }
-.contact-icon svg{width:18px;height:18px;stroke:var(--text2);stroke-width:1.5;fill:none}
-.contact-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--text3);margin-bottom:2px}
-.contact-value{font-family:var(--font-display);font-size:14px;font-weight:500;letter-spacing:.03em;color:var(--text)}
-
-@media(max-width:600px){
-  .contact-item{min-width:100%;flex:1}
+.contact-icon svg{
+  width:17px;height:17px;stroke:var(--text2);stroke-width:1.5;
+  fill:none;stroke-linecap:round;stroke-linejoin:round
 }
+.contact-label{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text3);margin-bottom:3px}
+.contact-value{font-family:var(--font-display);font-size:13px;font-weight:500;color:var(--text)}
+@media(max-width:540px){.contact-item{min-width:100%;flex:1}}
 
-/* ============================================
-   FORM SECTION
-   ============================================ */
+/* ── FORM ── */
 .form-section{
-  max-width:480px;width:100%;margin-top:80px;opacity:0;transform:translateY(40px)
+  max-width:460px;width:100%;margin-top:90px;opacity:0;transform:translateY(40px)
 }
 .form-title{
-  font-family:var(--font-display);font-size:13px;letter-spacing:.3em;text-transform:uppercase;
-  color:var(--text3);text-align:center;margin-bottom:32px
+  font-family:var(--font-display);font-size:10px;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--text3);text-align:center;margin-bottom:34px
 }
-.form-group{margin-bottom:16px}
+.form-group{margin-bottom:14px}
 .form-input,.form-textarea{
-  width:100%;padding:14px 20px;background:var(--card);border:1px solid var(--border);
-  border-radius:12px;color:var(--text);font-family:var(--font-body);font-size:14px;
+  width:100%;padding:14px 20px;background:var(--card);
+  border:1px solid var(--border);border-radius:12px;
+  color:var(--text);font-family:var(--font-body);font-size:14px;
   outline:none;transition:border-color .3s,background .3s
 }
 .form-input:focus,.form-textarea:focus{border-color:var(--border-a);background:var(--card-h)}
 .form-input::placeholder,.form-textarea::placeholder{color:var(--text3)}
-.form-textarea{resize:none;min-height:100px}
+.form-textarea{resize:none;min-height:110px}
 .form-btn{
-  width:100%;padding:16px;background:var(--text);color:var(--bg);border:none;border-radius:12px;
-  font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.15em;
-  text-transform:uppercase;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden
+  width:100%;padding:15px;background:var(--text);color:var(--bg);
+  border:1px solid transparent;border-radius:12px;
+  font-family:var(--font-display);font-size:12px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden
 }
-.form-btn::before{
-  content:'';position:absolute;inset:0;background:var(--bg);transform:scaleY(0);
-  transform-origin:bottom;transition:transform .4s cubic-bezier(.4,0,.2,1)
+.form-btn:not(:disabled):hover{
+  background:transparent;color:var(--text);border-color:var(--border-h)
 }
-.form-btn:hover::before{transform:scaleY(1)}
-.form-btn:hover{color:var(--text);border:1px solid var(--border-h)}
-.form-btn span{position:relative;z-index:1}
-.form-status{text-align:center;margin-top:16px;font-size:13px;color:var(--text2);opacity:0;transition:opacity .3s}
+.form-btn:disabled{opacity:.5}
+.form-status{
+  text-align:center;margin-top:14px;font-size:13px;
+  color:var(--text2);opacity:0;transition:opacity .4s;min-height:20px
+}
+.form-status.visible{opacity:1}
+.form-status.success{color:var(--text)}
+.form-status.error{color:var(--text3)}
 
-/* ============================================
-   FOOTER
-   ============================================ */
+/* ── FOOTER ── */
 #footer{
   padding:40px 5%;border-top:1px solid var(--border);
   display:flex;align-items:center;justify-content:center;position:relative;z-index:1
 }
-.footer-text{font-size:11px;letter-spacing:.2em;color:var(--text3)}
+.footer-text{font-size:10px;letter-spacing:.25em;color:var(--text3);text-transform:uppercase}
 
-/* ============================================
-   PAGE TRANSITION OVERLAY
-   ============================================ */
+/* ── PAGE TRANSITION ── */
 .page-transition{
-  position:fixed;inset:0;z-index:99997;background:var(--bg);
+  position:fixed;inset:0;z-index:99997;background:#000;
   transform:scaleY(0);transform-origin:bottom;pointer-events:none
 }
-
-/* ============================================
-   UTILITY
-   ============================================ */
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
 </style>
 </head>
 
 <body>
 
-<!-- ==================== CUSTOM CURSOR ==================== -->
+<!-- CURSOR -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 
-<!-- ==================== STARFIELD ==================== -->
+<!-- STARFIELD -->
 <div id="starfield" aria-hidden="true"></div>
 
-<!-- ==================== PRELOADER ==================== -->
+<!-- PRELOADER -->
 <div id="preloader">
   <div class="pre-text" aria-hidden="true">
-    <span class="pre-char" data-char="2">2</span>
-    <span class="pre-char" data-char="0">0</span>
-    <span class="pre-char" data-char="5">5</span>
-    <span class="pre-char" data-char="0">0</span>
+    <span class="pre-char">2</span>
+    <span class="pre-char">0</span>
+    <span class="pre-char">5</span>
+    <span class="pre-char">0</span>
   </div>
   <div class="pre-line"></div>
   <div class="pre-sub">Loading Experience</div>
 </div>
 
-<!-- ==================== NAVIGATION ==================== -->
-<nav id="nav" role="navigation">
+<!-- NAV -->
+<nav id="nav">
   <a href="#hero" class="nav-logo">2050</a>
-  <div class="nav-controls">
-    <button class="toggle-btn" id="langToggle" aria-label="Switch Language">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/>
-      </svg>
-      <span class="hide-mobile" data-i18n="langLabel">العربية</span>
-    </button>
+  <div class="nav-right">
     <button class="toggle-btn" id="themeToggle" aria-label="Toggle Theme">
       <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
       </svg>
-      <span class="hide-mobile" data-i18n="themeLabel">Light</span>
+      <span id="themeLabel">Light</span>
     </button>
   </div>
 </nav>
 
-<!-- ==================== HERO ==================== -->
+<!-- HERO -->
 <section id="hero">
-  <div class="hero-title-wrap" aria-label="2050">
-    <span class="hero-char" data-char="2">2</span>
-    <span class="hero-char" data-char="0">0</span>
-    <span class="hero-char" data-char="5">5</span>
-    <span class="hero-char" data-char="0">0</span>
+  <div class="hero-title-wrap" id="heroWrap">
+    <span class="hero-char" id="hc0">2</span>
+    <span class="hero-char" id="hc1">0</span>
+    <span class="hero-char" id="hc2">5</span>
+    <span class="hero-char" id="hc3">0</span>
   </div>
-  <div class="hero-name" data-i18n="heroName">فلاح أمين</div>
-  <div class="hero-line"></div>
-  <div class="scroll-indicator">
+  <div class="hero-name">Fellah Amine</div>
+  <div class="hero-line" id="heroLine"></div>
+  <div class="scroll-indicator" id="scrollInd">
     <div class="scroll-line"></div>
-    <span class="scroll-text" data-i18n="scroll">Scroll</span>
+    <span class="scroll-text">Scroll</span>
   </div>
 </section>
 
-<!-- ==================== IDENTITIES ==================== -->
-<section id="identities">
-  <div class="section-label" data-i18n="identitiesLabel">Identities</div>
-
+<!-- IDENTITIES -->
+<section class="section-wrap" id="identities">
+  <div class="section-label">Identities</div>
   <div class="cards-wrapper" id="cardsWrapper">
 
-    <!-- Card 1: University Student -->
-    <div class="identity-card" data-speed="0.025" data-depth="1">
+    <div class="identity-card" data-speed="0.022" data-depth="1">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24">
           <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-          <path d="M6 12v5c0 2 3 4 6 4s6-2 6-4v-5"/>
+          <path d="M6 12v5c0 2 3 3.5 6 3.5s6-1.5 6-3.5v-5"/>
         </svg>
       </div>
-      <div class="card-title" data-i18n="card1Title">University Student</div>
-      <div class="card-sub" data-i18n="card1Sub">2025</div>
+      <div class="card-title">University Student</div>
+      <div class="card-sub">2025</div>
     </div>
 
-    <!-- Card 2: Amateur Photographer -->
-    <div class="identity-card" data-speed="0.04" data-depth="2">
+    <div class="identity-card" data-speed="0.038" data-depth="2">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24">
           <path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/>
           <circle cx="12" cy="13" r="4"/>
         </svg>
       </div>
-      <div class="card-title" data-i18n="card2Title">Amateur Photographer</div>
-      <div class="card-sub" data-i18n="card2Sub">Capturing light</div>
+      <div class="card-title">Amateur Photographer</div>
+      <div class="card-sub">Capturing light</div>
     </div>
 
-    <!-- Card 3: Chess Enthusiast -->
-    <div class="identity-card" data-speed="0.015" data-depth="3">
+    <div class="identity-card" data-speed="0.014" data-depth="3">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M2 20h20"/><path d="M5 17h14"/>
-          <path d="M6 17l1-10h2l-1 4h8l-1-4h2l1 10"/>
-          <path d="M10 7V4"/><path d="M14 7V4"/>
-          <path d="M8 4h8"/><circle cx="12" cy="3" r="1"/>
+        <svg viewBox="0 0 24 24">
+          <path d="M3 18h18M5 18l1-9h2l-1 3.5h8L14 9h2l1 9"/>
+          <path d="M10 9V6m4 3V6M8 6h8"/>
+          <circle cx="12" cy="4.5" r="1.5"/>
         </svg>
       </div>
-      <div class="card-title" data-i18n="card3Title">Chess Enthusiast</div>
-      <div class="card-sub" data-i18n="card3Sub">Strategic mind</div>
+      <div class="card-title">Chess Enthusiast</div>
+      <div class="card-sub">Strategic mind</div>
     </div>
 
-    <!-- Card 4: Semi-Professional Athlete -->
-    <div class="identity-card" data-speed="0.035" data-depth="4">
+    <div class="identity-card" data-speed="0.032" data-depth="4">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24">
           <path d="M6.5 6.5a2.5 2.5 0 015 0v11a2.5 2.5 0 01-5 0z"/>
           <path d="M12.5 6.5a2.5 2.5 0 015 0v11a2.5 2.5 0 01-5 0z"/>
           <path d="M2 9h4.5M2 15h4.5M17.5 9H22M17.5 15H22M11.5 12h1"/>
         </svg>
       </div>
-      <div class="card-title" data-i18n="card4Title">Semi-Pro Athlete</div>
-      <div class="card-sub" data-i18n="card4Sub">Discipline & power</div>
+      <div class="card-title">Semi-Pro Athlete</div>
+      <div class="card-sub">Discipline & power</div>
     </div>
 
-    <!-- Card 5: Beginner Programmer -->
-    <div class="identity-card" data-speed="0.02" data-depth="5">
+    <div class="identity-card" data-speed="0.018" data-depth="5">
       <div class="card-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24">
           <polyline points="16 18 22 12 16 6"/>
           <polyline points="8 6 2 12 8 18"/>
           <line x1="14" y1="4" x2="10" y2="20"/>
         </svg>
       </div>
-      <div class="card-title" data-i18n="card5Title">Beginner Programmer</div>
-      <div class="card-sub" data-i18n="card5Sub">Exploring code</div>
+      <div class="card-title">Beginner Programmer</div>
+      <div class="card-sub">Exploring code</div>
     </div>
 
   </div>
 </section>
 
-<!-- ==================== CONTACT ==================== -->
-<section id="contact">
-  <div class="section-label" data-i18n="contactLabel">Contact</div>
+<!-- CONTACT -->
+<section class="section-wrap" id="contact">
+  <div class="section-label">Contact</div>
 
   <div class="contact-grid">
-
-    <!-- Phone -->
     <a href="tel:0562664409" class="contact-item">
       <div class="contact-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.362 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
+        <svg viewBox="0 0 24 24">
+          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 015.19 12.82a19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
         </svg>
       </div>
       <div>
-        <div class="contact-label" data-i18n="phoneLabel">Phone</div>
+        <div class="contact-label">Phone</div>
         <div class="contact-value">0562664409</div>
       </div>
     </a>
 
-    <!-- Email -->
     <a href="mailto:fellah.amine2050@gmail.com" class="contact-item">
       <div class="contact-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24">
           <rect x="2" y="4" width="20" height="16" rx="2"/>
           <path d="M22 7l-10 6L2 7"/>
         </svg>
       </div>
       <div>
-        <div class="contact-label" data-i18n="emailLabel">Email</div>
+        <div class="contact-label">Email</div>
         <div class="contact-value">fellah.amine2050@gmail.com</div>
       </div>
     </a>
 
-    <!-- Instagram -->
     <a href="https://instagram.com/2050_fh" target="_blank" rel="noopener" class="contact-item">
       <div class="contact-icon">
-        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5"/>
+        <svg viewBox="0 0 24 24">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
           <circle cx="12" cy="12" r="5"/>
-          <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
         </svg>
       </div>
       <div>
-        <div class="contact-label" data-i18n="instaLabel">Instagram</div>
+        <div class="contact-label">Instagram</div>
         <div class="contact-value">@2050_fh</div>
       </div>
     </a>
-
   </div>
 
-  <!-- Contact Form -->
+  <!-- REAL EMAIL FORM via EmailJS -->
   <div class="form-section" id="formSection">
-    <div class="form-title" data-i18n="formTitle">Send a Message</div>
-    <form id="contactForm" autocomplete="off">
+    <div class="form-title">Send a Message</div>
+    <form id="contactForm" novalidate>
       <div class="form-group">
-        <input type="text" class="form-input" name="name" placeholder="Your Name" data-i18n-ph="phName" required>
+        <input type="text" class="form-input" name="from_name" id="fromName"
+               placeholder="Your Name" required autocomplete="name">
       </div>
       <div class="form-group">
-        <input type="email" class="form-input" name="email" placeholder="Email Address" data-i18n-ph="phEmail" required>
+        <input type="email" class="form-input" name="reply_to" id="replyTo"
+               placeholder="Your Email" required autocomplete="email">
       </div>
       <div class="form-group">
-        <textarea class="form-textarea" name="message" placeholder="Your message..." data-i18n-ph="phMessage" required></textarea>
+        <textarea class="form-textarea" name="message" id="msgBody"
+                  placeholder="Your message..." required></textarea>
       </div>
-      <button type="submit" class="form-btn"><span data-i18n="sendBtn">Send</span></button>
+      <button type="submit" class="form-btn" id="submitBtn">Send</button>
     </form>
     <div class="form-status" id="formStatus"></div>
   </div>
 </section>
 
-<!-- ==================== FOOTER ==================== -->
+<!-- FOOTER -->
 <footer id="footer">
-  <p class="footer-text" data-i18n="footer">© 2050 — Fellah Amine. All rights reserved.</p>
+  <p class="footer-text">© 2050 — Fellah Amine</p>
 </footer>
 
-<!-- ==================== PAGE TRANSITION ==================== -->
+<!-- PAGE TRANSITION -->
 <div class="page-transition" id="pageTrans"></div>
 
-<!-- ==================== SCRIPTS ==================== -->
+<!-- EMAILJS SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
 <script>
-/* ============================================
-   INITIALIZATION
-   ============================================ */
-gsap.registerPlugin(ScrollTrigger);
+/* ═══════════════════════════════════════════════
+   EMAILJS CONFIGURATION
+   ═══════════════════════════════════════════════
+   STEPS TO MAKE EMAIL WORK:
+   1. Go to https://www.emailjs.com/ — sign up free
+   2. Add service: Gmail → connect fellah.amine2050@gmail.com
+   3. Create Email Template with variables:
+      {{from_name}}, {{reply_to}}, {{message}}
+   4. Copy your keys below:
+   ═══════════════════════════════════════════════ */
 
-const state = {
-  lang: 'en',
-  theme: 'dark',
-  preloaded: false,
-  mouseX: 0,
-  mouseY: 0
+const EJS_CONFIG = {
+  publicKey:   'YOUR_PUBLIC_KEY',       // From: Account → API Keys
+  serviceId:   'YOUR_SERVICE_ID',       // From: Email Services
+  templateId:  'YOUR_TEMPLATE_ID'       // From: Email Templates
 };
 
-/* ============================================
-   TRANSLATIONS
-   ============================================ */
-const i18n = {
-  en: {
-    langLabel: 'العربية',
-    themeLabel: 'Light',
-    themeLabelAlt: 'Dark',
-    heroName: 'Fellah Amine',
-    scroll: 'Scroll',
-    identitiesLabel: 'Identities',
-    card1Title: 'University Student',
-    card1Sub: '2025',
-    card2Title: 'Amateur Photographer',
-    card2Sub: 'Capturing light',
-    card3Title: 'Chess Enthusiast',
-    card3Sub: 'Strategic mind',
-    card4Title: 'Semi-Pro Athlete',
-    card4Sub: 'Discipline & power',
-    card5Title: 'Beginner Programmer',
-    card5Sub: 'Exploring code',
-    contactLabel: 'Contact',
-    phoneLabel: 'Phone',
-    emailLabel: 'Email',
-    instaLabel: 'Instagram',
-    formTitle: 'Send a Message',
-    phName: 'Your Name',
-    phEmail: 'Email Address',
-    phMessage: 'Your message...',
-    sendBtn: 'Send',
-    footer: '© 2050 — Fellah Amine. All rights reserved.',
-    sent: 'Message sent successfully!',
-    error: 'Something went wrong. Try again.'
-  },
-  ar: {
-    langLabel: 'English',
-    themeLabel: 'فاتح',
-    themeLabelAlt: 'داكن',
-    heroName: 'فلاح أمين',
-    scroll: 'مرّر',
-    identitiesLabel: 'الهويات',
-    card1Title: 'طالب جامعي',
-    card1Sub: '2025',
-    card2Title: 'مصور هاوي',
-    card2Sub: 'التقاط الضوء',
-    card3Title: 'محبّ الشطرنج',
-    card3Sub: 'عقل استراتيجي',
-    card4Title: 'رياضي شبه محترف',
-    card4Sub: 'انضباط وقوة',
-    card5Title: 'مبرمج مبتدئ',
-    card5Sub: 'استكشاف الأكواد',
-    contactLabel: 'تواصل',
-    phoneLabel: 'الهاتف',
-    emailLabel: 'البريد',
-    instaLabel: 'انستغرام',
-    formTitle: 'أرسل رسالة',
-    phName: 'الاسم الكامل',
-    phEmail: 'البريد الإلكتروني',
-    phMessage: 'رسالتك...',
-    sendBtn: 'إرسال',
-    footer: '© 2050 — فلاح أمين. جميع الحقوق محفوظة.',
-    sent: 'تم إرسال الرسالة بنجاح!',
-    error: 'حدث خطأ. حاول مجدداً.'
-  }
-};
+// Initialize EmailJS
+emailjs.init({ publicKey: EJS_CONFIG.publicKey });
 
-/* ============================================
+/* ═══════════════════════════════════════════════
+   GSAP SETUP
+   ═══════════════════════════════════════════════ */
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+const state = { theme: 'dark' };
+
+/* ═══════════════════════════════════════════════
    STARFIELD — STATIC & CRISP
-   ============================================ */
-function generateStars() {
+   ═══════════════════════════════════════════════ */
+(function buildStars() {
   const container = document.getElementById('starfield');
-  const count = Math.min(200, Math.floor(window.innerWidth * window.innerHeight / 8000));
-  
-  for (let i = 0; i < count; i++) {
-    const star = document.createElement('div');
-    star.className = 'star-point';
-    const size = Math.random() < 0.85 
-      ? Math.random() * 1.5 + 0.5   
-      : Math.random() * 2.5 + 1.5;  
-    
-    star.style.cssText = `
-      width:${size}px;height:${size}px;
-      left:${Math.random()*100}%;top:${Math.random()*100}%;
-      opacity:${Math.random()*0.6 + 0.15};
-    `;
-    container.appendChild(star);
-  }
-}
-generateStars();
+  const count = Math.min(220, Math.floor((window.innerWidth * window.innerHeight) / 7000));
+  const frag = document.createDocumentFragment();
 
-/* ============================================
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement('div');
+    el.className = 'star-point';
+    const rand = Math.random();
+    const size = rand < 0.75
+      ? (Math.random() * 1.4 + 0.4)   // tiny
+      : rand < 0.95
+        ? (Math.random() * 2 + 1.2)    // medium
+        : (Math.random() * 3 + 2.2);   // bright
+
+    el.style.cssText = `
+      width:${size}px;height:${size}px;
+      left:${(Math.random()*100).toFixed(2)}%;
+      top:${(Math.random()*100).toFixed(2)}%;
+      opacity:${(Math.random()*0.65+0.12).toFixed(2)};
+    `;
+    frag.appendChild(el);
+  }
+  container.appendChild(frag);
+})();
+
+/* ═══════════════════════════════════════════════
    CUSTOM CURSOR
-   ============================================ */
-const cursorDot = document.getElementById('cursorDot');
+   ═══════════════════════════════════════════════ */
+const cursorDot  = document.getElementById('cursorDot');
 const cursorRing = document.getElementById('cursorRing');
 const cursorGlow = document.getElementById('cursorGlow');
+let cx = 0, cy = 0, rx = 0, ry = 0, gx = 0, gy = 0;
 
-let cursorX = 0, cursorY = 0;
-let ringX = 0, ringY = 0;
-let glowX = 0, glowY = 0;
+document.addEventListener('mousemove', e => { cx = e.clientX; cy = e.clientY; });
 
-document.addEventListener('mousemove', e => {
-  cursorX = e.clientX;
-  cursorY = e.clientY;
-  state.mouseX = e.clientX;
-  state.mouseY = e.clientY;
-});
+(function animateCursor() {
+  cursorDot.style.left = cx + 'px';
+  cursorDot.style.top  = cy + 'px';
 
-function updateCursor() {
-  // Dot - immediate
-  cursorDot.style.left = cursorX - 3 + 'px';
-  cursorDot.style.top = cursorY - 3 + 'px';
-  
-  // Ring - smooth follow
-  ringX += (cursorX - ringX) * 0.15;
-  ringY += (cursorY - ringY) * 0.15;
-  cursorRing.style.left = ringX - 20 + 'px';
-  cursorRing.style.top = ringY - 20 + 'px';
-  
-  // Glow - slower follow
-  glowX += (cursorX - glowX) * 0.08;
-  glowY += (cursorY - glowY) * 0.08;
-  cursorGlow.style.left = glowX + 'px';
-  cursorGlow.style.top = glowY + 'px';
-  
-  requestAnimationFrame(updateCursor);
-}
-updateCursor();
+  rx += (cx - rx) * 0.14;
+  ry += (cy - ry) * 0.14;
+  cursorRing.style.left = rx + 'px';
+  cursorRing.style.top  = ry + 'px';
 
-// Hover effects on interactive elements
+  gx += (cx - gx) * 0.07;
+  gy += (cy - gy) * 0.07;
+  cursorGlow.style.left = gx + 'px';
+  cursorGlow.style.top  = gy + 'px';
+
+  requestAnimationFrame(animateCursor);
+})();
+
 document.querySelectorAll('a,button,.identity-card,.contact-item').forEach(el => {
   el.addEventListener('mouseenter', () => cursorRing.classList.add('hover'));
   el.addEventListener('mouseleave', () => cursorRing.classList.remove('hover'));
 });
 
-/* ============================================
-   PRELOADER ANIMATION
-   ============================================ */
-function runPreloader() {
-  const preChars = document.querySelectorAll('.pre-char');
-  const preLine = document.querySelector('.pre-line');
-  const preSub = document.querySelector('.pre-sub');
-  
-  const tl = gsap.timeline({
-    onComplete: () => {
-      revealPage();
-    }
-  });
-  
-  tl.to(preChars, {
-    opacity: 1,
-    y: '0%',
-    rotateX: 0,
-    duration: 0.7,
-    ease: 'power3.out',
-    stagger: 0.12
-  })
-  .to(preLine, {
-    width: 120,
-    duration: 0.6,
-    ease: 'power2.inOut'
-  }, '-=0.2')
-  .to(preSub, {
-    opacity: 1,
-    duration: 0.4,
-    ease: 'power2.out'
-  }, '-=0.3')
-  .to({}, { duration: 0.6 })  // hold
-  .to(preSub, {
-    opacity: 0,
-    y: -10,
-    duration: 0.3
-  })
-  .to(preLine, {
-    width: 0,
-    opacity: 0,
-    duration: 0.3
-  }, '-=0.2')
-  .to(preChars, {
-    y: '-120%',
-    opacity: 0,
-    duration: 0.5,
-    ease: 'power3.in',
-    stagger: 0.06
-  }, '-=0.2')
-  .to('#preloader', {
-    yPercent: -100,
-    duration: 0.8,
-    ease: 'power3.inOut'
-  }, '-=0.1');
-}
+/* ═══════════════════════════════════════════════
+   PRELOADER → PAGE REVEAL
+   ═══════════════════════════════════════════════ */
+document.body.style.overflow = 'hidden';
 
-/* ============================================
-   PAGE REVEAL — HERO ANIMATIONS
-   ============================================ */
 function revealPage() {
-  state.preloaded = true;
-  const heroChars = document.querySelectorAll('.hero-char');
-  const heroName = document.querySelector('.hero-name');
-  const heroLine = document.querySelector('.hero-line');
-  const scrollInd = document.querySelector('.scroll-indicator');
-  const nav = document.getElementById('nav');
-  
-  const tl = gsap.timeline();
-  
-  // Hero "2050" - kinetic letter-by-letter
-  tl.to(heroChars[0], {
+  const heroChars  = [
+    document.getElementById('hc0'),
+    document.getElementById('hc1'),
+    document.getElementById('hc2'),
+    document.getElementById('hc3')
+  ];
+  const heroName   = document.querySelector('.hero-name');
+  const heroLine   = document.getElementById('heroLine');
+  const scrollInd  = document.getElementById('scrollInd');
+  const nav        = document.getElementById('nav');
+
+  document.body.style.overflow = '';
+
+  const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+
+  tl.to(heroChars, {
     opacity: 1, y: 0, scale: 1,
-    duration: 0.9,
-    ease: 'power4.out'
-  }, 0.1)
-  .to(heroChars[1], {
-    opacity: 1, y: 0, scale: 1,
-    duration: 0.9,
-    ease: 'power4.out'
-  }, 0.25)
-  .to(heroChars[2], {
-    opacity: 1, y: 0, scale: 1,
-    duration: 0.9,
-    ease: 'power4.out'
-  }, 0.4)
-  .to(heroChars[3], {
-    opacity: 1, y: 0, scale: 1,
-    duration: 0.9,
-    ease: 'power4.out'
-  }, 0.55)
-  
-  // Name
-  .to(heroName, {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: 'power3.out'
-  }, 0.8)
-  
-  // Line
-  .to(heroLine, {
-    width: 60,
-    duration: 0.6,
-    ease: 'power2.inOut'
-  }, 1.0)
-  
-  // Nav
-  .to(nav, {
-    opacity: 1,
-    y: 0,
-    duration: 0.6,
-    ease: 'power3.out'
-  }, 1.1)
-  
-  // Scroll indicator
-  .to(scrollInd, {
-    opacity: 1,
-    duration: 0.5,
-    ease: 'power2.out'
-  }, 1.4);
-  
-  // Start continuous subtle animation for hero chars
-  heroChars.forEach((char, i) => {
-    gsap.to(char, {
-      y: -8 + Math.random() * 16,
-      duration: 3 + i * 0.4,
+    duration: 1.1,
+    stagger: 0.14
+  }, 0)
+  .to(heroName, { opacity: 1, y: 0, duration: 0.9 }, 0.55)
+  .to(heroLine, { width: 56, duration: 0.7, ease: 'power2.inOut' }, 0.75)
+  .to(nav,      { opacity: 1, y: 0, duration: 0.7 }, 0.9)
+  .to(scrollInd,{ opacity: 1, duration: 0.5 }, 1.3);
+
+  // Subtle float loop on "2050"
+  heroChars.forEach((c, i) => {
+    gsap.to(c, {
+      y: -12 + Math.sin(i) * 8,
+      duration: 2.8 + i * 0.5,
       ease: 'sine.inOut',
       repeat: -1,
       yoyo: true,
-      delay: 2 + i * 0.2
+      delay: 2.2 + i * 0.25
     });
   });
-  
-  // Setup scroll animations
+
   setupScrollAnimations();
 }
 
-/* ============================================
-   SCROLL-TRIGGERED ANIMATIONS
-   ============================================ */
+window.addEventListener('load', () => {
+  const preChars = document.querySelectorAll('.pre-char');
+  const preLine  = document.querySelector('.pre-line');
+  const preSub   = document.querySelector('.pre-sub');
+
+  gsap.timeline({ onComplete: revealPage })
+    .to(preChars, {
+      opacity: 1, y: '0%', rotateX: 0,
+      duration: 0.75, ease: 'power3.out', stagger: 0.11
+    })
+    .to(preLine, { width: 110, duration: 0.55, ease: 'power2.inOut' }, '-=0.2')
+    .to(preSub,  { opacity: 1, duration: 0.4 }, '-=0.25')
+    .to({}, { duration: 0.55 })
+    .to([preSub, preLine], { opacity: 0, y: -8, duration: 0.3, stagger: 0.06 })
+    .to(preChars, {
+      y: '-110%', opacity: 0,
+      duration: 0.55, ease: 'power3.in', stagger: 0.06
+    }, '-=0.15')
+    .to('#preloader', {
+      yPercent: -100,
+      duration: 0.85,
+      ease: 'power3.inOut'
+    }, '-=0.1');
+});
+
+/* ═══════════════════════════════════════════════
+   SCROLL ANIMATIONS
+   ═══════════════════════════════════════════════ */
 function setupScrollAnimations() {
-  // Section labels
-  gsap.utils.toArray('.section-label').forEach(label => {
-    gsap.from(label, {
-      scrollTrigger: {
-        trigger: label,
-        start: 'top 85%',
-        toggleActions: 'play none none none'
-      },
-      opacity: 0,
-      y: 20,
-      duration: 0.8,
-      ease: 'power3.out'
-    });
-  });
-  
-  // Identity cards - staggered reveal
-  const cards = gsap.utils.toArray('.identity-card');
-  cards.forEach((card, i) => {
-    gsap.to(card, {
-      scrollTrigger: {
-        trigger: card,
-        start: 'top 88%',
-        toggleActions: 'play none none none'
-      },
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.9,
-      delay: i * 0.1,
-      ease: 'power3.out'
-    });
-  });
-  
-  // Contact items
-  gsap.utils.toArray('.contact-item').forEach((item, i) => {
-    gsap.to(item, {
-      scrollTrigger: {
-        trigger: item,
-        start: 'top 88%',
-        toggleActions: 'play none none none'
-      },
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      delay: i * 0.12,
-      ease: 'power3.out'
-    });
-  });
-  
-  // Form section
-  const formSection = document.getElementById('formSection');
-  gsap.to(formSection, {
+
+  // Hero parallax
+  gsap.to('#heroWrap', {
     scrollTrigger: {
-      trigger: formSection,
-      start: 'top 85%',
-      toggleActions: 'play none none none'
+      trigger: '#hero', start: 'top top',
+      end: 'bottom top', scrub: 1.8
     },
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: 'power3.out'
+    y: -130, scale: 0.94, opacity: 0, ease: 'none'
   });
-  
-  // Hero parallax on scroll
-  gsap.to('.hero-title-wrap', {
-    scrollTrigger: {
-      trigger: '#hero',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: 1.5
-    },
-    y: -120,
-    opacity: 0,
-    scale: 0.95,
-    ease: 'none'
-  });
-  
+
   gsap.to('.hero-name', {
     scrollTrigger: {
-      trigger: '#hero',
-      start: 'top top',
-      end: '60% top',
-      scrub: 1.5
+      trigger: '#hero', start: '5% top',
+      end: '55% top', scrub: 1.5
     },
-    y: -60,
-    opacity: 0,
-    ease: 'none'
+    y: -55, opacity: 0, ease: 'none'
   });
-  
-  gsap.to('.scroll-indicator', {
+
+  gsap.to('#scrollInd', {
     scrollTrigger: {
-      trigger: '#hero',
-      start: '10% top',
-      end: '30% top',
-      scrub: true
+      trigger: '#hero', start: '8% top',
+      end: '28% top', scrub: true
     },
-    opacity: 0,
-    ease: 'none'
+    opacity: 0, ease: 'none'
   });
-}
 
-/* ============================================
-   PARALLAX & MAGNETIC HOVER — CARDS
-   ============================================ */
-const cardsContainer = document.getElementById('cardsWrapper');
-
-// Parallax on mouse move (desktop only)
-function handleParallax(e) {
-  if (window.innerWidth < 768) return;
-  
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  const moveX = (e.clientX - centerX);
-  const moveY = (e.clientY - centerY);
-  
-  document.querySelectorAll('.identity-card').forEach(card => {
-    const speed = parseFloat(card.dataset.speed) || 0.02;
-    gsap.to(card, {
-      x: moveX * speed,
-      y: moveY * speed + getCardOffset(card),
-      duration: 1.2,
-      ease: 'power2.out',
-      overwrite: 'auto'
+  // Section labels
+  gsap.utils.toArray('.section-label').forEach(el => {
+    gsap.from(el, {
+      scrollTrigger: { trigger: el, start: 'top 88%' },
+      opacity: 0, y: 18, duration: 0.8, ease: 'power3.out'
     });
   });
+
+  // Identity cards
+  document.querySelectorAll('.identity-card').forEach((card, i) => {
+    gsap.to(card, {
+      scrollTrigger: { trigger: card, start: 'top 90%' },
+      opacity: 1, y: 0, duration: 0.9,
+      delay: i * 0.09, ease: 'power3.out'
+    });
+  });
+
+  // Contact items
+  document.querySelectorAll('.contact-item').forEach((item, i) => {
+    gsap.to(item, {
+      scrollTrigger: { trigger: item, start: 'top 90%' },
+      opacity: 1, y: 0, duration: 0.7,
+      delay: i * 0.11, ease: 'power3.out'
+    });
+  });
+
+  // Form section
+  gsap.to('#formSection', {
+    scrollTrigger: { trigger: '#formSection', start: 'top 88%' },
+    opacity: 1, y: 0, duration: 0.9, ease: 'power3.out'
+  });
 }
 
-function getCardOffset(card) {
-  const offsets = { 1: 0, 2: 50, 3: -20, 4: 70, 5: 10 };
-  const depth = card.dataset.depth || 1;
-  return offsets[depth] || 0;
-}
+/* ═══════════════════════════════════════════════
+   HERO 3D MOUSE TILT
+   ═══════════════════════════════════════════════ */
+const heroWrap = document.getElementById('heroWrap');
+document.addEventListener('mousemove', e => {
+  if (window.innerWidth < 768) return;
+  const ox = (e.clientX / window.innerWidth - 0.5) * 6;
+  const oy = (e.clientY / window.innerHeight - 0.5) * -4;
+  gsap.to(heroWrap, {
+    rotateY: ox, rotateX: oy,
+    transformPerspective: 1200,
+    duration: 1.1, ease: 'power2.out', overwrite: 'auto'
+  });
+});
 
-document.addEventListener('mousemove', handleParallax);
+/* ═══════════════════════════════════════════════
+   CARD PARALLAX + MAGNETIC HOVER
+   ═══════════════════════════════════════════════ */
+const depthOffsets = { '1': 0, '2': 55, '3': -15, '4': 75, '5': 20 };
 
-// Magnetic hover on cards
+document.addEventListener('mousemove', e => {
+  if (window.innerWidth < 900) return;
+  const cx2 = window.innerWidth / 2;
+  const cy2 = window.innerHeight / 2;
+  document.querySelectorAll('.identity-card').forEach(card => {
+    const spd = parseFloat(card.dataset.speed) || 0.02;
+    const depth = card.dataset.depth || '1';
+    const baseY = depthOffsets[depth] || 0;
+    gsap.to(card, {
+      x: (e.clientX - cx2) * spd,
+      y: (e.clientY - cy2) * spd + baseY,
+      duration: 1.3, ease: 'power2.out', overwrite: 'auto'
+    });
+  });
+});
+
 document.querySelectorAll('.identity-card').forEach(card => {
   card.addEventListener('mousemove', function(e) {
-    const rect = this.getBoundingClientRect();
-    const x = e.clientX - rect.left - rect.width / 2;
-    const y = e.clientY - rect.top - rect.height / 2;
-    
+    const r = this.getBoundingClientRect();
+    const x = (e.clientX - r.left - r.width / 2) * 0.09;
+    const y = (e.clientY - r.top - r.height / 2) * -0.09;
     gsap.to(this, {
-      rotateY: x * 0.08,
-      rotateX: -y * 0.08,
-      transformPerspective: 800,
-      duration: 0.4,
-      ease: 'power2.out',
-      overwrite: 'auto'
+      rotateY: x, rotateX: y,
+      transformPerspective: 900,
+      duration: 0.45, ease: 'power2.out', overwrite: 'auto'
     });
   });
-  
   card.addEventListener('mouseleave', function() {
     gsap.to(this, {
-      rotateY: 0,
-      rotateX: 0,
-      duration: 0.7,
-      ease: 'elastic.out(1, 0.4)',
-      overwrite: 'auto'
+      rotateY: 0, rotateX: 0,
+      duration: 0.8, ease: 'elastic.out(1,.4)', overwrite: 'auto'
     });
   });
 });
 
-/* ============================================
+/* ═══════════════════════════════════════════════
    THEME TOGGLE
-   ============================================ */
-const themeToggle = document.getElementById('themeToggle');
-const themeIcon = document.getElementById('themeIcon');
-
-themeToggle.addEventListener('click', () => {
-  const html = document.documentElement;
+   ═══════════════════════════════════════════════ */
+document.getElementById('themeToggle').addEventListener('click', () => {
   const newTheme = state.theme === 'dark' ? 'light' : 'dark';
-  
-  // Transition overlay
   const trans = document.getElementById('pageTrans');
+
   gsap.timeline()
-    .to(trans, { scaleY: 1, transformOrigin: 'bottom', duration: 0.4, ease: 'power3.in', 
-      onComplete: () => {
-        html.setAttribute('data-theme', newTheme);
+    .to(trans, {
+      scaleY: 1, transformOrigin: 'bottom',
+      duration: 0.38, ease: 'power3.in',
+      onComplete() {
+        document.documentElement.setAttribute('data-theme', newTheme);
         state.theme = newTheme;
-        updateThemeUI();
+        document.getElementById('themeLabel').textContent = newTheme === 'dark' ? 'Light' : 'Dark';
+        const iconPath = newTheme === 'dark'
+          ? '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>'
+          : '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+        document.getElementById('themeIcon').innerHTML = iconPath;
       }
     })
-    .to(trans, { scaleY: 0, transformOrigin: 'top', duration: 0.4, ease: 'power3.out', delay: 0.1 });
+    .to(trans, {
+      scaleY: 0, transformOrigin: 'top',
+      duration: 0.38, ease: 'power3.out', delay: 0.08
+    });
 });
 
-function updateThemeUI() {
-  const label = themeToggle.querySelector('span');
-  const t = i18n[state.lang];
-  
-  if (state.theme === 'dark') {
-    themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
-    if (label) label.textContent = state.lang === 'en' ? 'Light' : 'فاتح';
+/* ═══════════════════════════════════════════════
+   NAV SCROLL BLUR
+   ═══════════════════════════════════════════════ */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('nav');
+  if (window.scrollY > 80) {
+    nav.style.cssText += ';background:rgba(0,0,0,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)';
   } else {
-    themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
-    if (label) label.textContent = state.lang === 'en' ? 'Dark' : 'داكن';
+    nav.style.background = 'transparent';
+    nav.style.backdropFilter = 'none';
   }
-}
+}, { passive: true });
 
-/* ============================================
-   LANGUAGE TOGGLE
-   ============================================ */
-const langToggle = document.getElementById('langToggle');
-
-langToggle.addEventListener('click', () => {
-  const newLang = state.lang === 'en' ? 'ar' : 'en';
-  
-  const trans = document.getElementById('pageTrans');
-  gsap.timeline()
-    .to(trans, { scaleY: 1, transformOrigin: 'bottom', duration: 0.4, ease: 'power3.in',
-      onComplete: () => {
-        state.lang = newLang;
-        applyLanguage(newLang);
-      }
-    })
-    .to(trans, { scaleY: 0, transformOrigin: 'top', duration: 0.4, ease: 'power3.out', delay: 0.1 });
-});
-
-function applyLanguage(lang) {
-  const html = document.documentElement;
-  const t = i18n[lang];
-  
-  html.setAttribute('lang', lang === 'ar' ? 'ar' : 'en');
-  html.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
-  
-  // Update all i18n text nodes
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (t[key]) el.textContent = t[key];
-  });
-  
-  // Update placeholders
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const key = el.dataset.i18nPh;
-    if (t[key]) el.placeholder = t[key];
-  });
-  
-  // Update theme label based on current theme
-  updateThemeUI();
-  
-  // Update font
-  document.body.style.fontFamily = lang === 'ar' 
-    ? "var(--font-ar)" 
-    : "var(--font-body)";
-  
-  // Update hero name font
-  const heroName = document.querySelector('.hero-name');
-  if (heroName) {
-    heroName.style.fontFamily = lang === 'ar' ? "var(--font-ar)" : "var(--font-display)";
-  }
-}
-
-/* ============================================
-   CONTACT FORM
-   ============================================ */
-const contactForm = document.getElementById('contactForm');
-const formStatus = document.getElementById('formStatus');
-
-contactForm.addEventListener('submit', async (e) => {
+/* ═══════════════════════════════════════════════
+   REAL EMAIL FORM — EMAILJS
+   ═══════════════════════════════════════════════ */
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
   e.preventDefault();
-  
-  const btn = contactForm.querySelector('.form-btn');
-  const originalText = btn.querySelector('span').textContent;
-  btn.querySelector('span').textContent = '...';
+
+  const btn    = document.getElementById('submitBtn');
+  const status = document.getElementById('formStatus');
+  const name   = document.getElementById('fromName').value.trim();
+  const email  = document.getElementById('replyTo').value.trim();
+  const msg    = document.getElementById('msgBody').value.trim();
+
+  // Basic validation
+  if (!name || !email || !msg) {
+    showStatus('Please fill all fields.', 'error');
+    return;
+  }
+  if (!isValidEmail(email)) {
+    showStatus('Please enter a valid email.', 'error');
+    return;
+  }
+
+  btn.textContent = 'Sending...';
   btn.disabled = true;
-  
-  const formData = new FormData(contactForm);
-  const data = Object.fromEntries(formData);
-  
-  // Simulated backend call
-  // In production, replace with:
-  // const res = await fetch('/api/contact', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type':'application/json'} });
-  
+
   try {
-    await new Promise(resolve => setTimeout(resolve, 1200));
-    
-    const t = i18n[state.lang];
-    formStatus.textContent = t.sent;
-    formStatus.style.opacity = '1';
-    formStatus.style.color = 'var(--text)';
-    contactForm.reset();
-    
-    gsap.fromTo(formStatus, { y: 10 }, { y: 0, duration: 0.4, ease: 'power3.out' });
-    
-    setTimeout(() => { formStatus.style.opacity = '0'; }, 3000);
+    await emailjs.send(
+      EJS_CONFIG.serviceId,
+      EJS_CONFIG.templateId,
+      {
+        from_name : name,
+        reply_to  : email,
+        message   : msg,
+        to_name   : 'Fellah Amine'   // used in template greeting
+      }
+    );
+
+    showStatus('Message sent. I'll get back to you soon.', 'success');
+    this.reset();
+
   } catch (err) {
-    const t = i18n[state.lang];
-    formStatus.textContent = t.error;
-    formStatus.style.opacity = '1';
-    formStatus.style.color = 'var(--text2)';
+    console.error('EmailJS Error:', err);
+    showStatus('Failed to send. Please try emailing directly.', 'error');
   } finally {
-    btn.querySelector('span').textContent = originalText;
+    btn.textContent = 'Send';
     btn.disabled = false;
   }
 });
 
-/* ============================================
-   SMOOTH ANCHOR SCROLLING
-   ============================================ */
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      gsap.to(window, {
-        scrollTo: { y: target, offsetY: 40 },
-        duration: 1.2,
-        ease: 'power3.inOut'
-      });
-    }
-  });
-});
-
-/* ============================================
-   NAV SCROLL BEHAVIOR
-   ============================================ */
-let lastScroll = 0;
-window.addEventListener('scroll', () => {
-  const nav = document.getElementById('nav');
-  const currentScroll = window.pageYOffset;
-  
-  if (currentScroll > 100) {
-    nav.style.background = state.theme === 'dark' 
-      ? 'rgba(0,0,0,0.8)' 
-      : 'rgba(240,240,240,0.8)';
-    nav.style.backdropFilter = 'blur(20px)';
-    nav.style.webkitBackdropFilter = 'blur(20px)';
-  } else {
-    nav.style.background = 'transparent';
-    nav.style.backdropFilter = 'none';
-    nav.style.webkitBackdropFilter = 'none';
-  }
-  
-  lastScroll = currentScroll;
-}, { passive: true });
-
-/* ============================================
-   HERO MOUSE INTERACTION — 3D tilt "2050"
-   ============================================ */
-const heroWrap = document.querySelector('.hero-title-wrap');
-
-document.addEventListener('mousemove', (e) => {
-  if (!state.preloaded || window.innerWidth < 768) return;
-  
-  const centerX = window.innerWidth / 2;
-  const centerY = window.innerHeight / 2;
-  const rotateY = ((e.clientX - centerX) / centerX) * 4;
-  const rotateX = ((e.clientY - centerY) / centerY) * -3;
-  
-  gsap.to(heroWrap, {
-    rotateY: rotateY,
-    rotateX: rotateX,
-    transformPerspective: 1200,
-    duration: 1,
-    ease: 'power2.out',
-    overwrite: 'auto'
-  });
-});
-
-/* ============================================
-   LAUNCH
-   ============================================ */
-window.addEventListener('DOMContentLoaded', () => {
-  // Ensure we start at top
-  window.scrollTo(0, 0);
-  
-  // Start preloader after fonts load
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(() => {
-      setTimeout(runPreloader, 200);
-    });
-  } else {
-    setTimeout(runPreloader, 500);
-  }
-});
-
-/* Prevent scroll during preload */
-document.body.style.overflow = 'hidden';
-function enableScroll() {
-  document.body.style.overflow = '';
+function showStatus(msg, type) {
+  const el = document.getElementById('formStatus');
+  el.textContent = msg;
+  el.className = `form-status ${type} visible`;
+  gsap.fromTo(el, { y: 6 }, { y: 0, duration: 0.4, ease: 'power3.out' });
+  setTimeout(() => el.classList.remove('visible'), 5000);
 }
-const preloaderObserver = new MutationObserver(() => {
-  const pre = document.getElementById('preloader');
-  if (pre && pre.style.visibility === 'hidden') {
-    enableScroll();
-    preloaderObserver.disconnect();
-  }
-});
 
-// Enable scroll after preloader timeline finishes
-const origReveal = revealPage;
-window._revealCalled = false;
-const _origRevealPage = revealPage;
-
-// Patch revealPage to enable scroll
-(function() {
-  const origFn = window.revealPage;
-})();
-
-// Fallback: enable scroll after max wait
-setTimeout(() => { document.body.style.overflow = ''; }, 5000);
-
-// Enable scroll when preloader moves off screen
-gsap.ticker.add(() => {
-  const pre = document.getElementById('preloader');
-  if (pre) {
-    const rect = pre.getBoundingClientRect();
-    if (rect.bottom <= 0 || pre.style.display === 'none') {
-      document.body.style.overflow = '';
-    }
-  }
-});
+function isValidEmail(e) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
 
 </script>
-
-<!-- GSAP ScrollTo Plugin for smooth anchor -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
-
 </body>
 </html>

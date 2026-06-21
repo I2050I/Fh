@@ -297,15 +297,12 @@ button{font-family:inherit;cursor:none}
 
 <body>
 
-<!-- CURSOR -->
 <div class="cursor-dot" id="cursorDot"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="cursor-glow" id="cursorGlow"></div>
 
-<!-- STARFIELD -->
 <div id="starfield" aria-hidden="true"></div>
 
-<!-- PRELOADER -->
 <div id="preloader">
   <div class="pre-text" aria-hidden="true">
     <span class="pre-char">2</span>
@@ -317,7 +314,6 @@ button{font-family:inherit;cursor:none}
   <div class="pre-sub">Loading Experience</div>
 </div>
 
-<!-- NAV -->
 <nav id="nav">
   <a href="#hero" class="nav-logo">2050</a>
   <div class="nav-right">
@@ -330,7 +326,6 @@ button{font-family:inherit;cursor:none}
   </div>
 </nav>
 
-<!-- HERO -->
 <section id="hero">
   <div class="hero-title-wrap" id="heroWrap">
     <span class="hero-char" id="hc0">2</span>
@@ -346,7 +341,6 @@ button{font-family:inherit;cursor:none}
   </div>
 </section>
 
-<!-- IDENTITIES -->
 <section class="section-wrap" id="identities">
   <div class="section-label">Identities</div>
   <div class="cards-wrapper" id="cardsWrapper">
@@ -412,7 +406,6 @@ button{font-family:inherit;cursor:none}
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="section-wrap" id="contact">
   <div class="section-label">Contact</div>
 
@@ -457,7 +450,6 @@ button{font-family:inherit;cursor:none}
     </a>
   </div>
 
-  <!-- REAL EMAIL FORM via EmailJS -->
   <div class="form-section" id="formSection">
     <div class="form-title">Send a Message</div>
     <form id="contactForm" novalidate>
@@ -479,17 +471,13 @@ button{font-family:inherit;cursor:none}
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer id="footer">
   <p class="footer-text">© 2050 — Fellah Amine</p>
 </footer>
 
-<!-- PAGE TRANSITION -->
 <div class="page-transition" id="pageTrans"></div>
 
-<!-- EMAILJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
@@ -497,19 +485,12 @@ button{font-family:inherit;cursor:none}
 <script>
 /* ═══════════════════════════════════════════════
    EMAILJS CONFIGURATION
-   ═══════════════════════════════════════════════
-   STEPS TO MAKE EMAIL WORK:
-   1. Go to https://www.emailjs.com/ — sign up free
-   2. Add service: Gmail → connect fellah.amine2050@gmail.com
-   3. Create Email Template with variables:
-      {{from_name}}, {{reply_to}}, {{message}}
-   4. Copy your keys below:
    ═══════════════════════════════════════════════ */
 
 const EJS_CONFIG = {
-  publicKey:   'YOUR_PUBLIC_KEY',       // From: Account → API Keys
-  serviceId:   'YOUR_SERVICE_ID',       // From: Email Services
-  templateId:  'YOUR_TEMPLATE_ID'       // From: Email Templates
+  publicKey:   'oeylxTTHeXQyGGqKq',       // From: Account → API Keys
+  serviceId:   'service_ykudnqq',       // From: Email Services
+  templateId:  'Akfzjn6'       // From: Email Templates
 };
 
 // Initialize EmailJS
@@ -849,7 +830,7 @@ document.getElementById('contactForm').addEventListener('submit', async function
       }
     );
 
-    showStatus('Message sent. I'll get back to you soon.', 'success');
+    showStatus('Message sent. I\'ll get back to you soon.', 'success');
     this.reset();
 
   } catch (err) {

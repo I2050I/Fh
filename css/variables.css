@@ -1,0 +1,205 @@
+/* =====================================================
+   CIPHER DECODE — Per-character scramble resolution
+   
+   Implementation note: this is NOT a CSS-native
+   animation — it requires JS to swap textContent
+   of individual character <span> elements on a
+   setInterval. The CSS below governs the transition
+   applied to each character span's opacity/color
+   as it "locks in" to its final glyph.
+   ===================================================== */
+
+.cipher-char {
+  display: inline-block;
+  /* Lock-in transition — the moment JS sets the final
+     character, this transition fires on color/opacity: */
+  transition:
+    color   80ms linear,
+    opacity 60ms linear;
+}
+
+.cipher-char.scrambling {
+  color:   #666666;   /* dim mid-gray during scramble phase */
+  opacity: 0.7;
+}
+
+.cipher-char.resolved {
+  color:   #F0F0F0;   /* --text-primary, full brightness */
+  opacity: 1.0;
+}
+
+/* JS timing reference (document these as JS constants): */
+:root {
+  /* How often each character slot swaps to a new random glyph: */
+  --cipher-swap-interval:     50ms;   /* setInterval period during scramble */
+
+  /* How long a character scrambles before being locked: */
+  --cipher-scramble-duration: 500ms;  /* total scramble window per word */
+
+  /* Left-to-right stagger: delay per character index */
+  --cipher-char-stagger:      30ms;   /* delay = charIndex * 30ms */
+
+  /* Full line decode duration (for a ~10-character word): */
+  /* = scramble-duration + (charCount * stagger) */
+  /* = 500ms + (10 * 30ms) = 800ms max, but last char */
+  /*   resolves at 500+300=800ms → ~0.5-0.8s per line ✓ */
+/* =====================================================
+   MANIFESTO SCROLL — Continuous upward line reveal
+   ===================================================== */
+
+.manifesto-track {
+  /* The entire text column translates upward as lines are added */
+  transition: transform 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* ↑ ease-out-quad: fast initial movement, smooth settle */
+  /* Fires each time a new line is appended; shifts up by: */
+  /* translateY( -(completedLines * --manifesto-line-height) ) */
+  /* where line-height = 30px (--type-manifesto-line-height)  */
+}
+
+.manifesto-line {
+  /* Each new line fades in from invisible as it decodes */
+  animation: manifestoLineEnter 200ms cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  /* ↑ ease-out-cubic: snappy entrance, no overshoot */
+}
+
+@keyframes manifestoLineEnter {
+  from {
+    opacity:   0;
+    transform: translateY(8px);  /* subtle upward drift on entry */
+  }
+  to {
+    opacity:   1;
+    transform: translateY(0px);
+  }
+}
+
+.manifesto-line.aging {
+  /* Lines that have scrolled past the midpoint fade out */
+  transition: opacity 600ms cubic-bezier(0.55, 0, 1, 0.45);
+  /* ↑ ease-in-cubic: slow start, accelerating fade — reads as natural disappearance */
+}
+
+/* Timing constants as custom properties (document for JS): */
+:root {
+  --manifesto-line-interval:   380ms;  /* time between each new line appearing */
+  --manifesto-translate-dur:   400ms;  /* duration of the track shift animation */
+  --manifesto-fade-out-start:  3;      /* lines scrolled past this index begin fading */
+  --manifesto-line-enter-dur:  200ms;  /* fade-in of each new line */
+/* =====================================================
+   CAROUSEL — Coverflow auto-scroll + depth effect
+   ===================================================== */
+
+.carousel-track {
+  display:         flex;
+  align-items:     center;       /* vertical centering handles scale differences */
+  gap:             var(--card-gap);
+
+  /* Continuous auto-scroll — implemented as a CSS animation
+     for a pure-CSS approach, or via JS requestAnimationFrame: */
+  animation: carouselScroll 12s linear infinite;
+  /* 12s = estimated full-cycle duration across all 6 cards
+     Adjust based on final card count and card-width */
+}
+
+@keyframes carouselScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-1 * (var(--card-width) + var(--card-gap)) * 6)); }
+  /* Multiply by card count for seamless loop;
+     duplicate cards in DOM for infinite marquee effect */
+}
+
+/* Individual card depth treatment — driven by
+   a CSS custom property set via JS based on distance
+   from the centered position: */
+.carousel-card {
+  flex-shrink: 0;
+  width:        var(--card-width);
+  height:       var(--card-height);
+  border-radius: var(--card-radius);
+  background:   var(--card-bg);
+  padding:      var(--card-padding);
+
+  /* Smooth transition of depth properties as card
+     moves through the carousel positions: */
+  transition:
+    transform  600ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity    600ms cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter     600ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* ↑ transform: ease-out-back (slight overshoot on scale-up = satisfying snap)
+     ↑ opacity:   ease-out-quad (smooth fade)
+     ↑ filter:    ease-out-quad (smooth defocus) */
+}
+
+.carousel-card[data-position="center"] {
+  transform: scale(var(--card-scale-center));
+  opacity:   var(--card-opacity-center);
+  filter:    blur(0px);
+  box-shadow: var(--glow-card-center);
+}
+
+.carousel-card[data-position="adjacent"] {
+  transform: scale(var(--card-scale-adjacent));
+  opacity:   var(--card-opacity-adjacent);
+  filter:    blur(1.5px);
+  box-shadow: none;
+}
+
+.carousel-card[data-position="outer"] {
+  transform: scale(var(--card-scale-outer));
+  opacity:   var(--card-opacity-outer);
+  filter:    blur(3px);
+  box-shadow: none;
+}
+
+/* =====================================================
+   CARD ENTRANCE ANIMATION (State 2 → State 3 transition)
+   Cards "unfold" upward from compressed height
+   ===================================================== */
+
+.carousel-card {
+  animation: cardUnfold 500ms cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  /* ease-out-back: overshoots slightly, settles = organic unfold feel */
+}
+
+.carousel-card:nth-child(1) { animation-delay:   0ms; }
+.carousel-card:nth-child(2) { animation-delay:  60ms; }
+.carousel-card:nth-child(3) { animation-delay: 120ms; }
+.carousel-card:nth-child(4) { animation-delay: 180ms; }
+.carousel-card:nth-child(5) { animation-delay: 240ms; }
+.carousel-card:nth-child(6) { animation-delay: 300ms; }
+/* Center card (index 2 in 0-based) resolves first
+   because it starts at shorter delay AND has data-position="center"
+   giving it full opacity immediately */
+
+@keyframes cardUnfold {
+  from {
+    opacity:    0;
+    transform:  scale(1) scaleY(0.3);   /* compressed vertically */
+    transform-origin: bottom center;
+  }
+  to {
+    opacity:    1;
+    transform:  scale(1) scaleY(1.0);
+  }
+}
+
+/* Layered content stagger within each card: */
+.card-stat-value {
+  animation: cardContentFade 300ms 200ms ease-out both;
+  /* Shell loads first, number fades in at +200ms */
+}
+
+.card-bullet-list {
+  animation: cardContentFade 300ms 360ms ease-out both;
+  /* Bullets at +360ms after card starts */
+}
+
+.card-footer-caption {
+  animation: cardContentFade 300ms 440ms ease-out both;
+  /* Caption last, at +440ms */
+}
+
+@keyframes cardContentFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}

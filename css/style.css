@@ -1,0 +1,108 @@
+:root {
+
+  /* ============================================
+     TYPOGRAPHY — FONT FAMILY
+     ============================================ */
+  --font-mono: 'JetBrains Mono', 'Space Mono', 'IBM Plex Mono', monospace;
+
+  /* ============================================
+     TYPOGRAPHY — HERO HEADLINE (Left block)
+     "Brain / And Body"
+     Observed: ~11–12% of 1080px viewport width
+     per cap-height character → ~72–80px
+     ============================================ */
+  --type-hero-headline-size:        72px;      /* 4.5rem */
+  --type-hero-headline-line-height: 80px;      /* 1.11 ratio — tight, display-style */
+  --type-hero-headline-letter-spacing: -0.02em; /* slight optical tightening */
+  --type-hero-headline-weight:      400;        /* regular — NOT bold */
+  --type-hero-headline-style:       normal;
+
+  /* ============================================
+     TYPOGRAPHY — RIGHT HEADLINE
+     "One / Network"
+     Slightly smaller than left block,
+     estimated ~85% of hero headline size
+     ============================================ */
+  --type-right-headline-size:        56px;      /* 3.5rem */
+  --type-right-headline-line-height: 64px;      /* 1.14 ratio */
+  --type-right-headline-letter-spacing: -0.02em;
+  --type-right-headline-weight:      400;
+  --type-right-headline-style:       normal;
+
+  /* ============================================
+     TYPOGRAPHY — HERO BODY COPY
+     "Built at the intersection..."
+     ~5 lines, left-column paragraph
+     ============================================ */
+  --type-body-size:        13px;     /* 0.8125rem */
+  --type-body-line-height: 22px;     /* 1.69 ratio — generous, scannable */
+  --type-body-letter-spacing: 0.01em;
+  --type-body-weight:      400;
+  --type-body-style:       normal;
+
+  /* ============================================
+     TYPOGRAPHY — MANIFESTO / SCROLLING PARAGRAPH
+     State 2 italic block — larger than hero body,
+     smaller than headlines. Centered column.
+     ============================================ */
+  --type-manifesto-size:        18px;     /* 1.125rem */
+  --type-manifesto-line-height: 30px;     /* 1.67 ratio */
+  --type-manifesto-letter-spacing: 0.005em;
+  --type-manifesto-weight:      400;
+  --type-manifesto-style:       italic;
+
+  /* ============================================
+     TYPOGRAPHY — CARD BIG STAT NUMBER
+     "99.9%" / "7.2M" / "0.4ms" etc.
+     Largest text on the card, bold
+     ============================================ */
+  --type-card-stat-size:        48px;     /* 3rem */
+  --type-card-stat-line-height: 52px;     /* 1.08 ratio — very tight display */
+  --type-card-stat-letter-spacing: -0.03em; /* tightest — monospace numerals need it */
+  --type-card-stat-weight:      700;
+  --type-card-stat-style:       normal;
+
+  /* ============================================
+     TYPOGRAPHY — CARD TITLE LABEL
+     "NEURAL ACTIVITY" / "SIGNAL INTEGRITY" etc.
+     All-caps, small, letter-spaced
+     ============================================ */
+  --type-card-title-size:        10px;     /* 0.625rem */
+  --type-card-title-line-height: 16px;     /* 1.6 ratio */
+  --type-card-title-letter-spacing: 0.18em; /* wide tracking — all-caps label style */
+  --type-card-title-weight:      400;
+  --type-card-title-style:       normal;
+  --type-card-title-transform:   uppercase;
+
+  /* ============================================
+     TYPOGRAPHY — CARD BULLET ITEMS
+     Small detail text, 3 items per card
+     ============================================ */
+  --type-card-bullet-size:        11px;     /* 0.6875rem */
+  --type-card-bullet-line-height: 18px;     /* 1.64 ratio */
+  --type-card-bullet-letter-spacing: 0.01em;
+  --type-card-bullet-weight:      400;
+  --type-card-bullet-style:       normal;
+
+  /* ============================================
+     TYPOGRAPHY — CARD FOOTER CAPTION
+     "LIVE SIGNALS INTERPRETED" etc.
+     Same visual weight as card title,
+     slightly dimmer color treatment
+     ============================================ */
+  --type-card-caption-size:        9px;      /* 0.5625rem */
+  --type-card-caption-line-height: 14px;
+  --type-card-caption-letter-spacing: 0.16em;
+  --type-card-caption-weight:      400;
+  --type-card-caption-style:       normal;
+  --type-card-caption-transform:   uppercase;
+
+  /* ============================================
+     TYPOGRAPHY — NAV LABELS
+     "SynapseX" / "Download"
+     ============================================ */
+  --type-nav-size:        13px;     /* 0.8125rem */
+  --type-nav-line-height: 20px;
+  --type-nav-letter-spacing: 0.02em;
+  --type-nav-weight:      400;
+}

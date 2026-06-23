@@ -105,4 +105,139 @@
   --type-nav-line-height: 20px;
   --type-nav-letter-spacing: 0.02em;
   --type-nav-weight:      400;
+:root {
+
+  /* ============================================
+     GLOBAL BACKGROUNDS
+     ============================================ */
+  --bg:                  #000000;   /* Page background — true black */
+  --bg-surface:          #0D0D0D;   /* Subtle lifted surface (not used heavily) */
+  --card-bg:             #111411;   /* Stat card fill — very dark charcoal w/ green tint */
+  --card-bg-dimmed:      #0C0F0C;   /* Off-center carousel card fill */
+  --nav-pill-bg:         #1A1A1A;   /* Logo + hamburger pill background */
+
+  /* ============================================
+     TEXT
+     ============================================ */
+  --text-primary:        #F0F0F0;   /* Hero headlines, stat numbers, manifesto active lines */
+  --text-secondary:      #9E9E9E;   /* Body copy, card bullets, off-center manifesto lines */
+  --text-tertiary:       #555555;   /* Fully faded manifesto lines at top of scroll */
+  --text-nav-cta:        #0A0A0A;   /* "Download" text on white pill button */
+  --text-card-label:     #7A7A7A;   /* Card title + footer caption labels */
+
+  /* ============================================
+     ACCENT — GREEN SYSTEM
+     ============================================ */
+  --accent-core:         #3DDC84;   /* Pure neon green — hex mesh emissive, icon highlights */
+  --accent-mid:          #2AB56A;   /* Slightly deeper green for hex mesh shadow side */
+  --accent-glow:         #1A5C38;   /* Wide bloom color — used in box-shadow glow layers */
+  --accent-glow-far:     #0B2B1C;   /* Outermost diffuse glow falloff — near-black teal */
+  --accent-hair-filament:#4AE890;   /* Bright wire/filament strands in hair — brighter than core */
+
+  /* ============================================
+     BUTTON — WHITE DOWNLOAD CTA
+     ============================================ */
+  --btn-cta-bg:          #F2F2F2;   /* Off-white pill fill */
+  --btn-cta-text:        #080808;   /* Near-black label */
+
+  /* ============================================
+     GLOW EFFECT IMPLEMENTATIONS
+     Use layered box-shadow for card/asset glow:
+     ============================================ */
+
+  /* Head asset ambient glow (applied to a bloom div behind the 3D canvas): */
+  --glow-head-shadow:
+    0 0 40px  2px  #3DDC8433,
+    0 0 100px 20px #1A5C3844,
+    0 0 200px 60px #0B2B1C66;
+
+  /* Center carousel card glow: */
+  --glow-card-center:
+    0 0 24px  4px  #3DDC8422,
+    0 0 60px  16px #1A5C3833;
+
+  /* Cipher-decode text — NO glow on text itself,
+     glow is ambient only from background bloom.
+     Text uses flat color: --text-primary */
+:root {
+
+  /* ============================================
+     GRID & VIEWPORT REFERENCE
+     Source: 1080px wide viewport
+     ============================================ */
+  --viewport-ref:        1080px;
+  --layout-max-width:    1080px;
+  --layout-h-padding:    48px;      /* ~4.4% of 1080px — outer left/right page margin */
+
+  /* ============================================
+     NAV BAR
+     ============================================ */
+  --nav-height:           56px;
+  --nav-padding-v:        12px;     /* top + bottom internal padding */
+  --nav-padding-h:        20px;     /* left + right internal padding (matches layout) */
+  --nav-gap:               8px;     /* gap between logo pill and hamburger button */
+  --nav-pill-padding:     10px 16px; /* internal padding of logo/cta pills */
+  --nav-pill-radius:      999px;    /* fully rounded */
+  --nav-icon-size:        16px;     /* gear + Apple logo icon size */
+  --nav-hamburger-size:   36px;     /* square hit target for hamburger button */
+
+  /* ============================================
+     HERO SECTION
+     ============================================ */
+  --hero-top-offset:      80px;     /* distance from bottom of nav to top of headline */
+  --hero-asset-width:     420px;    /* 3D head asset container width */
+  --hero-asset-height:    440px;    /* 3D head asset container height */
+
+  /* Left text block */
+  --hero-left-col-width:  320px;    /* ~30% of viewport */
+  --hero-left-col-offset: 48px;     /* from left edge (= --layout-h-padding) */
+  --hero-headline-mb:     20px;     /* margin-bottom between headline and body copy */
+
+  /* Right text block */
+  --hero-right-col-width: 260px;
+  --hero-right-col-offset: 48px;   /* from right edge */
+  --hero-right-col-top-offset: 180px; /* pushed down ~180px from nav bottom — aligns with neck */
+
+  /* ============================================
+     MANIFESTO / SCROLLING TEXT BLOCK (State 2)
+     ============================================ */
+  --manifesto-col-width:  520px;    /* centered, ~48% of viewport */
+  --manifesto-col-center: 50%;      /* transform: translateX(-50%) from left: 50% */
+  --manifesto-line-gap:   0px;      /* gap handled by line-height, no extra margin */
+  --manifesto-fade-height: 120px;   /* height of the top fade-mask gradient */
+  /* Implement fade as:
+     -webkit-mask-image: linear-gradient(
+       to bottom,
+       transparent 0px,
+       black 120px
+     ); */
+  --manifesto-top-clip:   120px;    /* lines above this threshold begin fading */
+
+  /* ============================================
+     CAROUSEL / STAT CARDS (State 3)
+     ============================================ */
+  --card-width:           280px;    /* center/focused card width */
+  --card-height:          340px;    /* center/focused card height */
+  --card-padding:         24px;     /* internal card padding — all sides */
+  --card-radius:          16px;     /* border-radius on all four corners */
+  --card-gap:             16px;     /* gap between card edges in the carousel track */
+
+  /* Stat value to bullet gap */
+  --card-stat-mb:         20px;     /* margin-bottom beneath big number */
+  --card-title-mb:        12px;     /* margin-bottom beneath card title label */
+  --card-bullet-gap:       8px;     /* gap between bullet list items */
+  --card-bullet-dot-size:  5px;     /* diameter of bullet dot marker */
+  --card-footer-mt:       auto;     /* push caption to bottom via flex + margin-top: auto */
+
+  /* Coverflow scale/opacity values */
+  --card-scale-center:    1.00;
+  --card-scale-adjacent:  0.88;
+  --card-scale-outer:     0.76;
+  --card-opacity-center:  1.00;
+  --card-opacity-adjacent: 0.60;
+  --card-opacity-outer:   0.30;
+
+  /* Carousel track */
+  --carousel-track-width: 200%;     /* overflows viewport to allow clipping at edges */
+  --carousel-visible-cards: 3.5;    /* approx cards visible at once including partials */
 }
